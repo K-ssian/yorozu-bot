@@ -8,37 +8,7 @@ class General(commands.Cog):
     def __init__(self, bot):
 
         self.bot = bot
-    @commands.command(name="help", aliases=["ayuda", "cecil-i-need-it"])
-    async def help_command(self, ctx):
 
-        embed = discord.Embed(
-           title="Ayuda - Listado de Comandos",
-           color=discord.Color.random()
-        )
-
-        prefix=datos_prefixes.recib_prefix(ctx.guild.id)
-
-        categorias = {}
-
-        for comando in self.bot.commands:
-
-           cog = comando.cog_name or "Sin categoría"
-
-           if cog not in categorias:
-
-             categorias[cog] = []
-
-           categorias[cog].append(f"{prefix}`{comando.name}` - {comando.help}")
-
-        for categoria, comandos in categorias.items():
-
-            embed.add_field(
-               name=f"__ {categoria} __",
-               value="\n".join(comandos),
-               inline=False
-            )
-
-        await ctx.send(embed=embed)
 
     @commands.command()
     async def ping(self, ctx):
