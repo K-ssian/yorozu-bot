@@ -5,17 +5,21 @@ class AyudaView(discord.ui.Select):
     def __init__(self, bot):
         self.bot = bot
         opciones = []
+        blacklist = ["AyudaInteractiva", "GestorErrores"]
 
         for nombre_cog, cog in bot.cogs.items():
-            if nombre_cog == "GestorErrores":
+            if nombre_cog in blacklist:
                 continue
 
             # Extrae atributos
             emoji = getattr(cog, "emoji", "⚙️")
             desc = getattr(cog, "descripcion_corta", f"Ver comandos de {nombre_cog}")
 
+            label_limpio = nombre_cog.replace("_", " ").title()
+
             opciones.append(discord.SelectOption(
-                label=nombre_cog,
+                label=label_limpio,
+                value=nombre_cog,
                 description=desc,
                 emoji=emoji
                 ))
@@ -27,15 +31,17 @@ class AyudaView(discord.ui.Select):
         cog = self.bot.get_cog(nombre_cog_elegido)
 
         embed = discord.Embed(
-                title=f"Categoria: {nombre_cog_elegido}",
+                title=f"__ {nombre_cog_elegido} __",
                 color=discord.Colour.dark_theme()
                 )
 
         for comando in cog.get_commands():
             if not comando.hidden:
                 ayuda_texto = comando.help or "Sin descripcion"
-
-                embed.add_field(name=f"!{comando.name} {comando.signature}", value=ayuda_texto, inline=False)
+                if comando.signature:
+                    embed.add_field(name=f"{comando.name} `{comando.signature}`", value=ayuda_texto, inline=False)
+                else:
+                    embed.add_field(name=f"{comando.name}", value=ayuda_texto, inline=False)
 
         await interaction.response.edit_message(embed=embed)
 
@@ -45,7 +51,7 @@ class AyudaViewAutomatizada(discord.ui.View):
         self.mensaje_referencia = None
         
         # Añadimos el menú desplegable a la vistaselself
-        self.add_item(AyudaDesplegable(bot))
+        self.add_item(AyudaView(bot))
 
     async def on_timeout(self):
         for child in self.children:

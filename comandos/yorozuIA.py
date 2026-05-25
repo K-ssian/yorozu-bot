@@ -4,7 +4,7 @@ import aiohttp
 import os
 import utilidades.datos_yorozu as db_yorozu
 
-class YorozuIA(commands.Cog):
+class Yorozu_IA(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.api_key = os.getenv("OPENROUTER_KEY")
@@ -140,4 +140,4 @@ Crear conversaciones entretenidas, intensas y memorables con el usuario.
             await ctx.send("⚠️ No hay ninguna conversación activa en este canal que requiera ser reiniciada.")
 
 async def setup(bot):
-    await bot.add_cog(YorozuIA(bot))
+    await bot.add_cog(Yorozu_IA(bot))

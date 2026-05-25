@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from utilidades.util_vistas import AyudaViewAutomatizada
+from utilidades.util_visual import AyudaViewAutomatizada
 from utilidades.util_embeds import gestor_mensajes
 
 class AyudaInteractiva(commands.Cog):
